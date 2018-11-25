@@ -17,8 +17,10 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import jsse_sample.HelloClient;
 import javafx.scene.control.TextField;
 
 public class Main extends Application implements EventHandler<ActionEvent>{
@@ -35,7 +37,9 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 	boolean autoRestartOption = false;
 	boolean executionStatus;
 	TextField txtFieldUserId ;
-	TextField txtFieldPassword ;
+	PasswordField txtFieldPassword ;
+	TextField txtFieldResults;
+	
 	Label lblResults;
 	Label lblUserId;
 	Label lblPassword;
@@ -68,7 +72,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 		txtFieldUserId.setLayoutY(60);
 		txtFieldUserId.setOnAction(this);
 		
-		txtFieldPassword = new TextField();
+		txtFieldPassword = new PasswordField();
 		txtFieldPassword.setText("Password:");
 		txtFieldPassword.setPrefColumnCount(20);
 		
@@ -80,6 +84,10 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 		lblResults = new Label("Results will come Here");
 		lblResults.setLayoutX(60);
 		lblResults.setLayoutY(220);
+		
+		txtFieldResults = new TextField();
+		txtFieldResults.setLayoutX(60);
+		txtFieldResults.setLayoutY(220);
 		
 		btnLogin = new BtnLogin();
 		btnLogin.setText("Login");
@@ -94,13 +102,14 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 		btnExit.setOnAction(this);
 			
 		Pane layout = new Pane();
-		layout.getChildren().add(btnLogin);
-		layout.getChildren().add(txtFieldPassword);
-		layout.getChildren().add(btnExit);
 		layout.getChildren().add(lblUserId);
-		layout.getChildren().add(txtFieldUserId);
 		layout.getChildren().add(lblPassword);
+		layout.getChildren().add(txtFieldUserId);
+		layout.getChildren().add(txtFieldPassword);
+		layout.getChildren().add(btnLogin);
+		layout.getChildren().add(btnExit);
 		layout.getChildren().add(lblResults);
+//		layout.getChildren().add(txtFieldResults);
 		
 		scene = new Scene(layout,300,300);
 		
@@ -116,7 +125,9 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 		
 		switch (whichButton) {
 		case "Login":{
-			
+			HelloClient helloClient = new HelloClient();
+			String results = helloClient.callRemoteMethod(txtFieldUserId.getText(), txtFieldPassword.getText());
+			lblResults.setText(results);
 			}				
 		
 			break;
